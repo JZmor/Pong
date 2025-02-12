@@ -1090,7 +1090,7 @@ MonoBehaviour:
   maxPaddleSpeed: 1
   paddleForce: 1
   speed: 20
-  paddleSound: {fileID: 8300000, guid: e19446d5cb779fc46bfad0b889e3b65a, type: 3}
+  paddleSound: {fileID: 8300000, guid: 2249970c90040804eaf8f9d5a9f22413, type: 3}
 --- !u!114 &932490653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,8 +1131,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e19446d5cb779fc46bfad0b889e3b65a, type: 3}
-  m_Resource: {fileID: 8300000, guid: e19446d5cb779fc46bfad0b889e3b65a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2249970c90040804eaf8f9d5a9f22413, type: 3}
+  m_Resource: {fileID: 8300000, guid: 2249970c90040804eaf8f9d5a9f22413, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
