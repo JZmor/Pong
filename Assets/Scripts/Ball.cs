@@ -44,7 +44,6 @@ public class Ball : MonoBehaviour
         if ((int)Time.time >= 60 && spawn2)
         {
             powerup2.SetActive(true);
-            startTime = Time.time;
         }
 
         if (!spawn2 && Time.time - startTime >= 10)
@@ -184,13 +183,13 @@ public class Ball : MonoBehaviour
         {
             if (rbody.linearVelocity.x > 0)
             {
-                paddleScriptL.speed = 35;
+                paddleScriptL.speed = 30;
                 other.gameObject.SetActive(false);
                 spawn1 = false;
             }
             else
             {
-                paddleScriptR.speed = 35;
+                paddleScriptR.speed = 30;
                 other.gameObject.SetActive(false);
                 spawn1 = false;
             }
@@ -199,6 +198,7 @@ public class Ball : MonoBehaviour
             transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
             other.gameObject.SetActive(false);
             spawn2 = false;
+            startTime = Time.time;
         }
     }
 }
