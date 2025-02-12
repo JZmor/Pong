@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using UnityEngine.InputSystem;
 
 public class PaddleScript : MonoBehaviour
@@ -9,6 +8,8 @@ public class PaddleScript : MonoBehaviour
     public float paddleForce = 1f;
 
     public float speed = 0;
+    
+    public AudioClip paddleSound;
     
     private Rigidbody rb;
     private int count;
@@ -49,5 +50,19 @@ public class PaddleScript : MonoBehaviour
         //newPosition.z = Math.Clamp(newPosition.z, -2.2f, 2.2f);
         
         //paddleTransform.position = newPosition;
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (!other.gameObject.CompareTag("Wall") && !other.gameObject.CompareTag("No Sound"))
+        {
+            AudioSource audioSrc = GetComponent<AudioSource>();
+            audioSrc.clip = paddleSound;
+            float shift = other.gameObject.GetComponent<Rigidbody>().linearVelocity.magnitude;
+            //Debug.Log(shift);
+            shift = shift * 0.01f;
+            audioSrc.pitch = 1 + shift;
+            audioSrc.Play();
+        }
     }
 }

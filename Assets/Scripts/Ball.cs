@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -6,8 +7,19 @@ public class Ball : MonoBehaviour
     public float ballSpeed = 5f;
     public float leftScore;
     public float rightScore;
+    public ScoreScript scoreScript;
+    public PaddleScript paddleScriptL;
+    public PaddleScript paddleScriptR;
+    public GameObject powerup1;
+    public GameObject powerup2;
+    
 
     private Vector3 movement;
+
+    private bool spawn1;
+    private bool spawn2;
+
+    private float startTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,6 +27,8 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = new Vector3(ballSpeed, 0f, 0f);
         leftScore = 0;
         rightScore = 0;
+        spawn1 = true;
+        spawn2 = true;
     }
 
     // Update is called once per frame
@@ -22,6 +36,21 @@ public class Ball : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = movement;
+        if ((int)Time.time >= 20 && spawn1)
+        {
+            powerup1.SetActive(true);
+        }
+
+        if ((int)Time.time >= 60 && spawn2)
+        {
+            powerup2.SetActive(true);
+            startTime = Time.time;
+        }
+
+        if (!spawn2 && Time.time - startTime >= 10)
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -92,46 +121,84 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Rigidbody rbody = GetComponent<Rigidbody>();
         if (other.gameObject.CompareTag("Right Score"))
         {
             rightScore = rightScore + 1;
+            scoreScript.ChangeScore(false);
             Debug.Log($"Right player scored! {leftScore}-{rightScore}");
             if (leftScore >= 11)
             {
                 Debug.Log("Game Over, Left Paddle Wins");
                 leftScore = 0;
                 rightScore = 0;
+                rbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                rbody.position = new Vector3(0f, 0f, 0f);
+                movement = rbody.linearVelocity;
+                return;
             } else if (rightScore >= 11)
             {
                 Debug.Log("Game Over, Right Paddle Wins");
                 leftScore = 0;
                 rightScore = 0;
+                rbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                rbody.position = new Vector3(0f, 0f, 0f);
+                movement = rbody.linearVelocity;
+                return;
             }
-            Rigidbody rbody = GetComponent<Rigidbody>();
             rbody.linearVelocity = new Vector3(0f, 0f, 0f);
             rbody.position = new Vector3(0f, 0f, 0f);
             rbody.linearVelocity = new Vector3(-ballSpeed, 0f, 0f);
             movement = rbody.linearVelocity;
-        } else if (other.gameObject.CompareTag("Left Score"))
+        } 
+        else if (other.gameObject.CompareTag("Left Score"))
         {
             leftScore = leftScore + 1;
+            scoreScript.ChangeScore(true);
             Debug.Log($"Left player scored! {leftScore}-{rightScore}");
             if (leftScore >= 11)
             {
                 Debug.Log("Game Over, Left Paddle Wins");
                 leftScore = 0;
                 rightScore = 0;
+                rbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                rbody.position = new Vector3(0f, 0f, 0f);
+                movement = rbody.linearVelocity;
+                return;
             } else if (rightScore >= 11)
             {
                 Debug.Log("Game Over, Right Paddle Wins");
                 leftScore = 0;
                 rightScore = 0;
+                rbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                rbody.position = new Vector3(0f, 0f, 0f);
+                movement = rbody.linearVelocity;
+                return;
             }
-            Rigidbody rbody = GetComponent<Rigidbody>();
             rbody.linearVelocity = new Vector3(0f, 0f, 0f);
             rbody.position = new Vector3(0f, 0f, 0f);
             rbody.linearVelocity = new Vector3(ballSpeed, 0f, 0f);
             movement = rbody.linearVelocity;
+        }
+        else if (other.gameObject.CompareTag("Paddle Speed Up"))
+        {
+            if (rbody.linearVelocity.x > 0)
+            {
+                paddleScriptL.speed = 35;
+                other.gameObject.SetActive(false);
+                spawn1 = false;
+            }
+            else
+            {
+                paddleScriptR.speed = 35;
+                other.gameObject.SetActive(false);
+                spawn1 = false;
+            }
+        } else if (other.gameObject.CompareTag("Ball Size Up"))
+        {
+            transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            other.gameObject.SetActive(false);
+            spawn2 = false;
         }
     }
 }

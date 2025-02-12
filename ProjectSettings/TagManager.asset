@@ -7,6 +7,9 @@ TagManager:
   - Wall
   - Right Score
   - Left Score
+  - No Sound
+  - Paddle Speed Up
+  - Ball Size Up
   layers:
   - Default
   - TransparentFX
